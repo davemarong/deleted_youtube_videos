@@ -1,7 +1,6 @@
 // IMPORT
 
 // React
-import { useState } from "react";
 
 // Material UI
 import Button from "@mui/material/Button";

@@ -5,7 +5,7 @@
 // Material UI
 
 // Components
-import { Nav } from "./components/nav/Nav";
+import { Nav } from "./components/Nav/Nav";
 import { MyPlaylist } from "./pages/MyPlaylist";
 import { FindPlaylist } from "./pages/FindPlaylist";
 import { MyDeletedVideos } from "./pages/MyDeletedVideos";
@@ -27,7 +27,6 @@ function App() {
   // Return
   return (
     <>
-      <Nav />
       <Routes>
         <Route path="/FindPlaylist" element={<FindPlaylist />} />
         <Route path="/MyPlaylist" element={<MyPlaylist />} />

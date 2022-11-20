@@ -5,6 +5,9 @@
 // Material UI
 
 // Components
+import { Nav } from "../components/Nav/Nav";
+import { Header } from "../components/Header/Header";
+import { Playlist } from "../components/Playlist/Playlist";
 
 // Utils
 
@@ -19,5 +22,11 @@ export const FindPlaylist = () => {
   // Functions
 
   // Return
-  return <div>find playlsit</div>;
+  return (
+    <>
+      <Nav />
+      <Header>Find Playlist</Header>
+      <Playlist></Playlist>
+    </>
+  );
 };

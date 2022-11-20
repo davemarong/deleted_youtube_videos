@@ -5,6 +5,8 @@
 // Material UI
 
 // Components
+import { Nav } from "../components/Nav/Nav";
+import { Header } from "../components/Header/Header";
 
 // Utils
 
@@ -19,5 +21,10 @@ export const MyDeletedVideos = () => {
   // Functions
 
   // Return
-  return <>My deleted videos</>;
+  return (
+    <>
+      <Nav />
+      <Header>My Deleted Videos</Header>
+    </>
+  );
 };

@@ -5,6 +5,8 @@
 // Material UI
 
 // Components
+import { Nav } from "../components/Nav/Nav";
+import { Header } from "../components/Header/Header";
 
 // Utils
 
@@ -19,5 +21,10 @@ export const PlaylistBackups = () => {
   // Functions
 
   // Return
-  return <>Playlist Backups</>;
+  return (
+    <>
+      <Nav />
+      <Header>Playlist Backups</Header>
+    </>
+  );
 };
