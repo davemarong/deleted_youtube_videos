@@ -19,8 +19,9 @@ import { useGetChromeStorage } from "../components/CustomHooks/useGetChromeStora
 
 // Data
 import { playlist_test_data } from "../Data/TestData";
+
 // Functional component
-export const FindPlaylist = () => {
+export const SyncPlaylist = () => {
   // State
 
   // Functions

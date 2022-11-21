@@ -6,7 +6,7 @@
 
 // Components
 import { MyPlaylist } from "./pages/MyPlaylist";
-import { FindPlaylist } from "./pages/FindPlaylist";
+import { SyncPlaylist } from "./pages/SyncPlaylist";
 import { MyDeletedVideos } from "./pages/MyDeletedVideos";
 import { PlaylistBackups } from "./pages/PlaylistBackups";
 
@@ -27,11 +27,11 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/FindPlaylist" element={<FindPlaylist />} />
-        <Route path="/MyPlaylist" element={<MyPlaylist />} />
-        <Route path="/MyDeletedVideos" element={<MyDeletedVideos />} />
-        <Route path="/PlaylistBackups" element={<PlaylistBackups />} />
-        <Route path="*" element={<Navigate to="/FindPlaylist" replace />} />
+        <Route path="/Sync" element={<SyncPlaylist />} />
+        <Route path="/Playlist" element={<MyPlaylist />} />
+        <Route path="/Videos" element={<MyDeletedVideos />} />
+        <Route path="/Backups" element={<PlaylistBackups />} />
+        <Route path="*" element={<Navigate to="/Sync" replace />} />
       </Routes>
     </>
   );
