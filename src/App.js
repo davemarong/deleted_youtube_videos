@@ -5,7 +5,6 @@
 // Material UI
 
 // Components
-import { Nav } from "./components/Nav/Nav";
 import { MyPlaylist } from "./pages/MyPlaylist";
 import { FindPlaylist } from "./pages/FindPlaylist";
 import { MyDeletedVideos } from "./pages/MyDeletedVideos";
