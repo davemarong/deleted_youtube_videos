@@ -42,7 +42,8 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.set({ data });
   console.log("Default playlist and deletedVideos is created");
 });
-console.log("background loaded");
+
+// Filter for when user is on youtube
 const filter = {
   url: [
     {
@@ -51,17 +52,38 @@ const filter = {
   ],
 };
 
-const executeContentScriptAutoSync = async (tabs) => {
-  chrome.scripting.executeScript(
-    {
-      target: { tabId: tabs },
-      files: ["./content-scripts/autoSyncPlaylist.js"],
-    },
-    (result) => {
-      console.log("Auto update complete");
-    }
-  );
+const content_scripts_enum = {
+  autoSyncPlaylist: "./content-scripts/autoSyncPlaylist.js",
+  getLocalStorageData: "./content-scripts/getLocalStorageData.js",
+  getPlaylistAndPassMessage: "./content-scripts/getPlaylistAndPassMessage.js",
 };
+
+// Function for running a content script from the background file
+const executeContentScript = async (file, message) => {
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+    chrome.scripting.executeScript(
+      {
+        target: { tabId: tabs[0].id },
+        files: [file],
+      },
+      (result) => {
+        console.log(message);
+      }
+    );
+  });
+};
+
+// Listen to message from syncPlaylist when extension is opened.
+chrome.runtime.onMessage.addListener((request) => {
+  if (request.popupOpen) {
+    executeContentScript(
+      content_scripts_enum.getPlaylistAndPassMessage,
+      "getPlaylistAndPassMessage completed"
+    );
+  }
+  console.log(request, "in tha background anyway");
+});
+
 chrome.webNavigation.onHistoryStateUpdated.addListener(async () => {
   // Get tab-id and tab-url
   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
@@ -77,11 +99,14 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(async () => {
       console.log(`Last update was: ${lastUpdate}, and today is ${dayInMonth}`);
 
       // If last update auto-sync was today, return
-      // if (dayAndMonth === lastUpdate) return;
+      if (dayAndMonth === lastUpdate) return;
 
       // Check if current playlist is the same as the saved playlist
       if (playlistId.length > 0 && url.includes(playlistId)) {
-        executeContentScriptAutoSync(tabs[0].id);
+        executeContentScript(
+          content_scripts_enum.autoSyncPlaylist,
+          "autoSyncPlaylist completed"
+        );
       }
       // If playlist does not exist, check in local storage
       else {
@@ -94,7 +119,7 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(async () => {
             chrome.storage.local.get(["data"], ({ data }) => {
               let { playlistId } = data;
               if ((playlistId = true && url.includes(playlistId))) {
-                executeContentScriptAutoSync(tabs[0].id);
+                executeContentScript(content_scripts_enum.autoSyncPlaylist);
               } else {
                 console.log("nope. not yet");
               }

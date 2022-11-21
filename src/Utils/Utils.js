@@ -1,19 +1,40 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-undef */
-// Find playlist on the youtube page and send it back to extension
-
-{
-  console.log("Am in");
-  const currentPlaylist = [
-    ...document.querySelectorAll(
-      "[playlist-type='PLVE'] #items #playlist-items"
-    ),
-  ].map((item) => {
-    const title = item.querySelector("#meta h4 #video-title");
-    const img = item.querySelector("#img");
-    const url = item.querySelector("#thumbnail");
-    return { title: title.textContent.trim(), img: img.src, url: url.href };
+// Injecting a function into the webpage. This function then has access to the webpage dom.
+export const injectFunctionToWebsite = async (func) => {
+  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    function: func,
   });
+};
+
+export const getPlaylistAndPassMessage = () => {
+  let currentPlaylis = [
+    document.querySelectorAll("[playlist-type='PLVE'] #items #playlist-items"),
+  ];
+  console.log("1");
+  const currentPlaylist = [...currentPlaylis];
+  console.log("2");
+  let neyArray = [];
+  currentPlaylist.forEach((item) => {
+    const title = item.querySelector("#meta h4 #video-title");
+    console.log(title);
+
+    const img = item.querySelector("#img");
+    console.log(img);
+
+    const url = item.querySelector("#thumbnail");
+    console.log(url);
+  });
+  //   currentPlaylist.map((item) => {
+  //     const title = item.querySelector("#meta h4 #video-title");
+  //     const img = item.querySelector("#img");
+  //     const url = item.querySelector("#thumbnail");
+  //     return { title: title.textContent.trim(), img: img.src, url: url.href };
+  //   });
+  console.log("3");
+
   // Find playlistId in the url
   const text = "list=";
   const url = window.location.href;
@@ -44,4 +65,4 @@
       playlistId: playlistId,
     });
   });
-}
+};

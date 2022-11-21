@@ -1,19 +1,18 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-undef */
 // Find playlist on the youtube page and send it back to extension
-
 {
-  console.log("Am in");
-  const currentPlaylist = [
+  let currentPlaylist = [
     ...document.querySelectorAll(
-      "[playlist-type='PLVE'] #items #playlist-items"
+      "[page-subtype='playlist'] ytd-playlist-video-renderer"
     ),
   ].map((item) => {
-    const title = item.querySelector("#meta h4 #video-title");
+    const title = item.querySelector("#meta h3 a");
     const img = item.querySelector("#img");
-    const url = item.querySelector("#thumbnail");
+    const url = item.querySelector("#thumbnail #thumbnail");
     return { title: title.textContent.trim(), img: img.src, url: url.href };
   });
+
   // Find playlistId in the url
   const text = "list=";
   const url = window.location.href;

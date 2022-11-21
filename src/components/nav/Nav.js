@@ -32,7 +32,7 @@ export const Nav = () => {
   };
   // Return
   return (
-    <Paper style={{ padding: "10px 0" }}>
+    <Paper style={{ padding: "10px 0", marginBottom: 10 }}>
       <Grid
         container
         justifyContent="space-evenly"
