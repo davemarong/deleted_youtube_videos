@@ -30,6 +30,7 @@ import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
 import { useGetChromeStorage } from "../components/CustomHooks/useGetChromeStorage";
 
 // External
+import { useSnackbar } from "notistack";
 
 // Data
 import { playlist_test_data } from "../Data/TestData";
@@ -45,7 +46,8 @@ export const SyncPlaylist = () => {
   const [chromeLoading, setChromeLoading] = useState(false);
   // This is true if the two playlistId's are the same.
   const [matchingID, setMatchingId] = useState(false);
-
+  // Snackbar library
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   // Custom hook
   const [data, loading] = useGetChromeStorage();
 
@@ -155,6 +157,13 @@ export const SyncPlaylist = () => {
             },
           ],
         })
+      );
+      enqueueSnackbar(
+        `Your playlist have been synced. We found ${newlyDeletedVideos.length} deleted videos`,
+        {
+          autoHideDuration: 6000,
+          variant: "success",
+        }
       );
     });
   };
