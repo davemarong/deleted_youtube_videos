@@ -3,7 +3,7 @@
 // Find playlist on the youtube page and send it back to extension
 
 {
-  console.log("Am in");
+  console.log("Starting getPlaylistAndPassMessage content script");
   const currentPlaylist = [
     ...document.querySelectorAll(
       "[playlist-type='PLVE'] #items #playlist-items"

@@ -20,7 +20,6 @@ import Grid from "@mui/material/Grid";
 // Components
 
 // Custom Hook
-import { useGetChromeStorage } from "../CustomHooks/useGetChromeStorage";
 
 // Utils
 
@@ -30,8 +29,9 @@ import { useGetChromeStorage } from "../CustomHooks/useGetChromeStorage";
 import { playlist_test_data } from "../../Data/TestData";
 
 // Functional component
-export const Playlist = ({ children, playlistData, loading }) => {
+export const Playlist = ({ children, playlistData, loading, errorMessage }) => {
   // State
+  const [fetchFailed, setFetchFailed] = useState(false);
 
   // Functions
 
@@ -49,25 +49,29 @@ export const Playlist = ({ children, playlistData, loading }) => {
     <Paper elevation={3} style={{ margin: 5 }}>
       <Typography align="center">{children}</Typography>
       <List style={{ overflowY: "scroll", height: 300 }}>
-        {playlistData.map((item) => {
-          return (
-            <ListItem disablePadding>
-              <ListItemButton href={item.url}>
-                <ListItemAvatar>
-                  <Avatar
-                    variant="rounded"
-                    sx={{ width: 62, height: 35 }}
-                    alt={item.title}
-                    src={item.img}
-                  />
-                </ListItemAvatar>
-                <Typography style={{ paddingLeft: 10 }} variant="body2">
-                  {item.title}{" "}
-                </Typography>
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
+        {playlistData.length > 0 ? (
+          playlistData.map((item) => {
+            return (
+              <ListItem disablePadding>
+                <ListItemButton href={item.url}>
+                  <ListItemAvatar>
+                    <Avatar
+                      variant="rounded"
+                      sx={{ width: 62, height: 35 }}
+                      alt={item.title}
+                      src={item.img}
+                    />
+                  </ListItemAvatar>
+                  <Typography style={{ paddingLeft: 10 }} variant="body2">
+                    {item.title}{" "}
+                  </Typography>
+                </ListItemButton>
+              </ListItem>
+            );
+          })
+        ) : (
+          <Typography style={{ margin: 20 }}>{errorMessage}</Typography>
+        )}
       </List>
     </Paper>
   );

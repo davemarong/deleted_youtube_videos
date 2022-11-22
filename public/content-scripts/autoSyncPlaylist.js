@@ -72,8 +72,6 @@
       }
     });
 
-    console.log("update current playlist ", updatedCurrentPlaylist);
-
     // Save the newly created deletedVideos and playlist
     chrome.storage.local.set({
       data: {
@@ -118,5 +116,5 @@
       })
     );
   });
-  console.log("Playlist updated automaticly");
+  console.log("autoSyncPlaylist contentscript complete");
 }

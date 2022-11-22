@@ -9,60 +9,20 @@ export const injectFunctionToWebsite = async (func) => {
   });
 };
 
-export const getPlaylistAndPassMessage = () => {
-  let currentPlaylis = [
-    document.querySelectorAll("[playlist-type='PLVE'] #items #playlist-items"),
-  ];
-  console.log("1");
-  const currentPlaylist = [...currentPlaylis];
-  console.log("2");
-  let neyArray = [];
-  currentPlaylist.forEach((item) => {
-    const title = item.querySelector("#meta h4 #video-title");
-    console.log(title);
+// Compare playlist and return "deleted" videos
+export const comparePlaylists = (selector1, selector2) => {
+  let oldPlaylist_element = document.querySelector(selector1);
+  let newPlaylist_element = document.querySelector(selector2);
 
-    const img = item.querySelector("#img");
-    console.log(img);
+  const oldPlaylist = [...oldPlaylist_element.querySelectorAll("p")].map(
+    (video) => video.textContent
+  );
+  const newPlaylist = [...newPlaylist_element.querySelectorAll("p")].map(
+    (video) => video.textContent
+  );
 
-    const url = item.querySelector("#thumbnail");
-    console.log(url);
-  });
-  //   currentPlaylist.map((item) => {
-  //     const title = item.querySelector("#meta h4 #video-title");
-  //     const img = item.querySelector("#img");
-  //     const url = item.querySelector("#thumbnail");
-  //     return { title: title.textContent.trim(), img: img.src, url: url.href };
-  //   });
-  console.log("3");
-
-  // Find playlistId in the url
-  const text = "list=";
-  const url = window.location.href;
-  const number = url.search(text);
-  const playlistId = url.slice(number + 5, number + 5 + 34);
-
-  // Get img-url from oldPlaylist if newPlaylist does not have
-  chrome.storage.local.get(["data"], ({ data }) => {
-    const updatedCurrentPlaylist = currentPlaylist.map((currentVideo) => {
-      // If img is present, return
-      if (currentVideo.img) return currentVideo;
-
-      // If image is not present, find image in old playlist and return that
-      const updatedVideo = data.playlist.find(
-        (oldVideo) => currentVideo.title === oldVideo.title
-      );
-
-      if (updatedVideo) {
-        return updatedVideo;
-      } else {
-        return currentVideo;
-      }
-    });
-
-    // Send data back to extension
-    chrome.runtime.sendMessage({
-      playlist: updatedCurrentPlaylist,
-      playlistId: playlistId,
-    });
-  });
+  const newlyDeletedVideos = oldPlaylist.filter(
+    (oldVideo) => !newPlaylist.find((currentVideo) => oldVideo === currentVideo)
+  );
+  return [newlyDeletedVideos.length, newlyDeletedVideos];
 };

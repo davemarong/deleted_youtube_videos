@@ -19,13 +19,14 @@ import { useState, useEffect } from "react";
 export const useGetChromeStorage = (dataType) => {
   // State
   const [chromeData, setChromeData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  console.log("usegetchrome");
   // Effect
   useEffect(() => {
+    console.log(
+      "Running useGetChromeStorage custom hook to fetch data from chrome.storage"
+    );
     chrome.storage.local.get("data", ({ data }) => {
-      setLoading(true);
       if (dataType) {
         setChromeData(data[dataType]);
         setLoading(false);

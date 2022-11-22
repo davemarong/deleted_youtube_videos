@@ -34,7 +34,7 @@ let data = {
     },
   ],
   deletedVideos: [],
-  playlistId: "",
+  playlistId: "PLVEFS9uzMyHYKBAklGQmv6m38WH_mG5eI",
   lastUpdate: "",
   playlistBackups: [],
 };
@@ -78,10 +78,9 @@ chrome.runtime.onMessage.addListener((request) => {
   if (request.popupOpen) {
     executeContentScript(
       content_scripts_enum.getPlaylistAndPassMessage,
-      "getPlaylistAndPassMessage completed"
+      "getPlaylistAndPassMessage completed from the background"
     );
   }
-  console.log(request, "in tha background anyway");
 });
 
 chrome.webNavigation.onHistoryStateUpdated.addListener(async () => {
@@ -99,13 +98,13 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(async () => {
       console.log(`Last update was: ${lastUpdate}, and today is ${dayInMonth}`);
 
       // If last update auto-sync was today, return
-      if (dayAndMonth === lastUpdate) return;
+      // if (dayAndMonth === lastUpdate) return;
 
       // Check if current playlist is the same as the saved playlist
       if (playlistId.length > 0 && url.includes(playlistId)) {
         executeContentScript(
           content_scripts_enum.autoSyncPlaylist,
-          "autoSyncPlaylist completed"
+          "autoSyncPlaylist completed in the background"
         );
       }
       // If playlist does not exist, check in local storage
@@ -120,14 +119,19 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(async () => {
               let { playlistId } = data;
               if ((playlistId = true && url.includes(playlistId))) {
                 executeContentScript(content_scripts_enum.autoSyncPlaylist);
+                console.log(
+                  "Playlist gotten from localStorage and the autoSyncPlaylist was run from the background"
+                );
               } else {
-                console.log("nope. not yet");
+                console.log(
+                  "The new and old playlist did not match. Either wrong playlist or one wasn't found."
+                );
               }
             });
           }
         );
       }
     });
-  }),
-    filter;
+  });
+  filter;
 });

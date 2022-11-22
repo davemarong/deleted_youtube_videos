@@ -2,9 +2,9 @@
 /* eslint-disable no-undef */
 {
   const playlistData = JSON.parse(localStorage.getItem("playlistData"));
-  console.log("inside getlocalstorragecontent");
+  console.log("inside getlocalstorragecontent content script");
   if (playlistData) {
-    console.log("playlist found in local storage");
+    console.log("playlist found in local storagr, from getLocalStorageContent");
     // Save the newly created deletedVideos and playlist
     chrome.storage.local.set({
       data: {
