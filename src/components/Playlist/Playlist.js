@@ -31,8 +31,7 @@ import { playlist_test_data } from "../../Data/TestData";
 // Functional component
 export const Playlist = ({ children, playlistData, loading, errorMessage }) => {
   // State
-  const [fetchFailed, setFetchFailed] = useState(false);
-
+  console.log(playlistData);
   // Functions
 
   // Custom Hook
@@ -47,9 +46,14 @@ export const Playlist = ({ children, playlistData, loading, errorMessage }) => {
   // Return
   return (
     <Paper elevation={3} style={{ margin: 5 }}>
-      <Typography align="center">{children}</Typography>
+      <Typography variant="h6" align="center">
+        {children}
+      </Typography>
+      <Typography align="center" variant="body2">
+        {playlistData?.length} videos found
+      </Typography>
       <List style={{ overflowY: "scroll", height: 300 }}>
-        {playlistData.length > 0 ? (
+        {playlistData?.length > 0 ? (
           playlistData.map((item) => {
             return (
               <ListItem disablePadding>

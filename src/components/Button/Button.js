@@ -6,6 +6,7 @@
 
 // Material UI
 import ButtonMui from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 
 // Components
 
@@ -18,11 +19,17 @@ import ButtonMui from "@mui/material/Button";
 // Data
 
 // Functional component
-export const Button = ({ children, func }) => {
+export const Button = ({ children, func, icon, variant, align = "center" }) => {
   // State
 
   // Functions
 
   // Return
-  return <ButtonMui onClick={func}>{children}</ButtonMui>;
+  return (
+    <Grid container justifyContent={align}>
+      <ButtonMui variant={variant} startIcon={icon} onClick={func}>
+        {children}
+      </ButtonMui>
+    </Grid>
+  );
 };

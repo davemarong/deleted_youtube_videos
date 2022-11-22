@@ -8,6 +8,11 @@ let data = {
       url: "https://www.youtube.com/watch?v=Az5k9YSlnYc&list=PLVEFS9uzMyHYKBAklGQmv6m38WH_mG5eI&index=1",
     },
     {
+      title: "Pokémon nope and Silver- National Park (Lofi Remix)",
+      img: "https://i.ytimg.com/vi/Az5k9YSlnYc/hqdefault.jpg?sqp=-oaymwE1CKgBEF5IVfKriqkDKAgBFQAAiEIYAXABwAEG8AEB-AH-CYAC0AWKAgwIABABGH8gQygtMA8=&rs=AOn4CLDh0wpTihOVlCFzQUg6uf_ASu3Yjw",
+      url: "https://www.youtube.com/watch?v=Az5k9YSlnYc&list=PLVEFS9uzMyHYKBAklGQmv6m38WH_mG5eI&index=1",
+    },
+    {
       title: "Mewmore // Azalea Town (Pokémon Gold & Silver Remix)",
       img: "https://i.ytimg.com/vi/ss0sJ2QxduA/hqdefault.jpg?sqp=-oaymwEbCKgBEF5IVfKriqkDDggBFQAAiEIYAXABwAEG&rs=AOn4CLAJcNY7vK556-kVm3YHRlnR9kmQbg",
       url: "https://www.youtube.com/watch?v=ss0sJ2QxduA&list=PLVEFS9uzMyHYKBAklGQmv6m38WH_mG5eI&index=2",
