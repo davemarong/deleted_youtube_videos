@@ -88,26 +88,8 @@ export const SyncPlaylist = () => {
   // let data = playlist_test_data;
   // let loading = false;
 
-  const savePlaylist = (chromePlaylist) => {
-    // Get current playlist from Youtube with titles, images and url's
-    // const currentPlaylist = [
-    //   ...document.querySelectorAll(
-    //     "[playlist-type='PLVE'] #items #playlist-items"
-    //   ),
-    // ].map((item) => {
-    //   const title = item.querySelector("#meta h4 #video-title");
-    //   const img = item.querySelector("#img");
-    //   const url = item.querySelector("#thumbnail");
-    //   return { title: title.textContent.trim(), img: img.src, url: url.href };
-    // });
-
-    const currentPlaylist = chromePlaylist.playlist;
+  const savePlaylist = (currentPlaylist, playlistId, newlyDeletedVideos) => {
     console.log(currentPlaylist);
-    // Find playlistId in the url
-    const text = "list=";
-    const url = window.location.href;
-    const number = url.search(text);
-    const playlistId = url.slice(number + 5, number + 5 + 34);
 
     // Get day of month
     const date = new Date();
@@ -119,12 +101,7 @@ export const SyncPlaylist = () => {
       const { playlist, deletedVideos, playlistBackups } = data;
 
       // Filter out videos that are not found in oldPlaylist and currentPlaylist
-      const newlyDeletedVideos = playlist.filter(
-        (oldVideo) =>
-          !currentPlaylist.find(
-            (currentVideo) => oldVideo.title === currentVideo.title
-          )
-      );
+      console.log("newlyDeletedVideos", newlyDeletedVideos);
 
       // Get img-url from oldPlaylist if newPlaylist does not have
       const updatedCurrentPlaylist = currentPlaylist.map((currentVideo) => {
@@ -198,7 +175,11 @@ export const SyncPlaylist = () => {
               data.playlist,
               chromePlaylist.playlist
             );
-            savePlaylist(chromePlaylist);
+            savePlaylist(
+              chromePlaylist.playlist,
+              chromePlaylist.playlistId,
+              deletedVideos
+            );
           }}
         >
           Sync now

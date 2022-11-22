@@ -11,13 +11,17 @@ export const injectFunctionToWebsite = async (func) => {
 
 // Compare playlist and return "deleted" videos
 export const comparePlaylists = (list1, list2) => {
-  const oldPlaylist = [...list1].map((video) => video.title);
-  const newPlaylist = [...list2].map((video) => video.title);
-
-  const newlyDeletedVideos = oldPlaylist.filter(
-    (oldVideo) => !newPlaylist.find((currentVideo) => oldVideo === currentVideo)
+  const newlyDeletedVideos = list1.filter(
+    (oldVideo) =>
+      !list2.find((currentVideo) => oldVideo.title === currentVideo.title)
   );
-  console.log(newlyDeletedVideos);
+  // const oldPlaylist = [...list1].map((video) => video.title);
+  // const newPlaylist = [...list2].map((video) => video.title);
+
+  // const newlyDeletedVideos = oldPlaylist.filter(
+  //   (oldVideo) => !newPlaylist.find((currentVideo) => oldVideo === currentVideo)
+  // );
+  // console.log(newlyDeletedVideos);
   return [newlyDeletedVideos.length, newlyDeletedVideos];
 };
 export const compareIDs = (id1, id2) => {
