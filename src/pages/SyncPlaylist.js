@@ -21,6 +21,7 @@ import {
   injectFunctionToWebsite,
   comparePlaylists,
   compareIDs,
+  savePlaylist,
 } from "../Utils/Utils";
 
 // Icon
@@ -90,84 +91,6 @@ export const SyncPlaylist = () => {
   // let data = playlist_test_data;
   // let loading = false;
 
-  const savePlaylist = (currentPlaylist, playlistId, newlyDeletedVideos) => {
-    console.log(currentPlaylist);
-
-    // Get day of month
-    const date = new Date();
-    const [day, month, dayInMonth] = date.toString().split(" ");
-    const dayAndMonth = `${month} ${dayInMonth}`;
-
-    // Fetch playlist and deletedVideos from Chrome storage
-    chrome.storage.local.get(["data"], ({ data }) => {
-      const { playlist, deletedVideos, playlistBackups } = data;
-
-      // Filter out videos that are not found in oldPlaylist and currentPlaylist
-      console.log("newlyDeletedVideos", newlyDeletedVideos);
-
-      // Get img-url from oldPlaylist if newPlaylist does not have
-      const updatedCurrentPlaylist = currentPlaylist.map((currentVideo) => {
-        // If img is present, return
-        if (currentVideo.img) return currentVideo;
-
-        // If image is not present, find image in old playlist and return that
-        const updatedVideo = playlist.find(
-          (oldVideo) => currentVideo.title === oldVideo.title
-        );
-
-        if (updatedVideo) {
-          return updatedVideo;
-        } else {
-          return currentVideo;
-        }
-      });
-      console.log(updatedCurrentPlaylist);
-      // Save the newly created deletedVideos and playlist
-      chrome.storage.local.set({
-        data: {
-          playlist: updatedCurrentPlaylist,
-          deletedVideos: [...deletedVideos, ...newlyDeletedVideos],
-          playlistId: playlistId,
-          lastUpdate: dayAndMonth,
-          playlistBackups: [
-            ...playlistBackups,
-            {
-              playlist: updatedCurrentPlaylist,
-              deletedVideos: [...deletedVideos, ...newlyDeletedVideos],
-              playlistId: playlistId,
-              lastUpdate: dayAndMonth,
-            },
-          ],
-        },
-      });
-      localStorage.setItem(
-        "playlistData",
-        JSON.stringify({
-          playlist: updatedCurrentPlaylist,
-          deletedVideos: [...deletedVideos, ...newlyDeletedVideos],
-          playlistId: playlistId,
-          lastUpdate: dayAndMonth,
-          playlistBackups: [
-            ...playlistBackups,
-            {
-              playlist: updatedCurrentPlaylist,
-              deletedVideos: [...deletedVideos, ...newlyDeletedVideos],
-              playlistId: playlistId,
-              lastUpdate: dayAndMonth,
-            },
-          ],
-        })
-      );
-      enqueueSnackbar(
-        `Your playlist have been synced. We found ${newlyDeletedVideos.length} deleted videos`,
-        {
-          autoHideDuration: 6000,
-          variant: "success",
-        }
-      );
-    });
-  };
-
   // Return
   return (
     <>
@@ -188,6 +111,13 @@ export const SyncPlaylist = () => {
               chromePlaylist.playlist,
               chromePlaylist.playlistId,
               deletedVideos
+            );
+            enqueueSnackbar(
+              `Your playlist have been synced. We found ${numberDeletedVideos} deleted videos`,
+              {
+                autoHideDuration: 6000,
+                variant: "success",
+              }
             );
           }}
         >
