@@ -37,9 +37,13 @@ import { useSnackbar } from "notistack";
 import { playlist_test_data } from "../Data/TestData";
 import { Button } from "../components/Button/Button";
 import { menu_items } from "../components/Menu/MenuItems";
+import {
+  oldPlaylistErrorMessage,
+  newPlaylistErrorMessage,
+} from "../constants/Constants";
 
 // Functional component
-export const SyncPlaylist = () => {
+export const SyncPlaylist = ({ data, loading }) => {
   // State
   // This playlist comes from the youtube page, sent to us by the contentScript getPlaylistAndPassMessage
   const [chromePlaylist, setChromePlaylist] = useState([]);
@@ -49,8 +53,6 @@ export const SyncPlaylist = () => {
   const [matchingID, setMatchingId] = useState(false);
   // Snackbar library
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  // Custom hook
-  const [data, loading] = useGetChromeStorage();
 
   // Effect
   useEffect(() => {
@@ -80,16 +82,6 @@ export const SyncPlaylist = () => {
     // XXXXXXXX Now we only compare id's when the youtube playlsit is fetched. We need to do the same when the fetching frm chrome.storage is done as well
     setMatchingId(compareIDs(chromePlaylist.playlistId, data.playlistId));
   }, [data, chromePlaylist]);
-
-  // Variable
-  const oldPlaylistErrorMessage =
-    "You don't have a playlist saved. Open any video inside a playlist on youtube, and open the 'Sync' page again. Then press the 'Sync now' button.";
-  const newPlaylistErrorMessage =
-    "We could not find a playlist on this page. Open any video inside a playlist on youtube, and open the 'Sync' page again. ";
-
-  // TESTING;
-  // let data = playlist_test_data;
-  // let loading = false;
 
   // Return
   return (

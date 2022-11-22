@@ -56,7 +56,7 @@ export const Playlist = ({ children, playlistData, loading, errorMessage }) => {
         {playlistData?.length > 0 ? (
           playlistData.map((item) => {
             return (
-              <ListItem disablePadding>
+              <ListItem key={item.url} disablePadding>
                 <ListItemButton href={item.url}>
                   <ListItemAvatar>
                     <Avatar
