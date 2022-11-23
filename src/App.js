@@ -44,11 +44,11 @@ function App() {
   return (
     <>
       <Routes>
-        {/* <Route path="/Sync" element={<SyncPlaylist {...PagesProps} />} /> */}
+        <Route path="/Sync" element={<SyncPlaylist {...PagesProps} />} />
         <Route path="/Playlist" element={<MyPlaylist {...PagesProps} />} />
         <Route path="/Videos" element={<MyDeletedVideos {...PagesProps} />} />
         <Route path="/Backups" element={<PlaylistBackups {...PagesProps} />} />
-        <Route path="*" element={<Navigate to="/Playlist" replace />} />
+        <Route path="*" element={<Navigate to="/Backups" replace />} />
       </Routes>
     </>
   );

@@ -29,7 +29,6 @@ export const MyPlaylist = ({ data, loading }) => {
       <Header>My Playlist</Header>
       <Playlist
         playlistData={data.playlist}
-        loading={loading}
         errorMessage={oldPlaylistErrorMessage}
       >
         My Playlist
