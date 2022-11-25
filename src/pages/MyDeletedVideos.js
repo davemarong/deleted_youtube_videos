@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-undef */
 // IMPORT
 
 // React
@@ -8,6 +10,7 @@
 import { Nav } from "../components/Nav/Nav";
 import { Header } from "../components/Header/Header";
 import { Playlist } from "../components/Playlist/Playlist";
+import { Button } from "../components/Button/Button";
 
 // Utils
 
@@ -22,6 +25,13 @@ export const MyDeletedVideos = ({ data, loading }) => {
 
   // Functions
 
+  const remove = () => {
+    chrome.storage.local.set({
+      data: {
+        deletedVideos: [],
+      },
+    });
+  };
   // Return
   return (
     <>
@@ -33,6 +43,7 @@ export const MyDeletedVideos = ({ data, loading }) => {
       >
         My Deleted Videos
       </Playlist>
+      <Button onClick={remove}>Remove 'My deleted Videos'</Button>
     </>
   );
 };
