@@ -23,6 +23,9 @@ export const compareIDs = (id1, id2) => {
   return false;
 };
 
+export const checkBackupPlaylistLimit = (backup) =>
+  backup.filter((item, index) => index < 19);
+
 export const savePlaylist = (
   currentPlaylist,
   playlistId,
@@ -59,6 +62,10 @@ export const savePlaylist = (
       }
     });
     console.log(updatedCurrentPlaylist);
+
+    // Cut down backups until it's less then 15 item
+    const filteredBackups = checkBackupPlaylistLimit(playlistBackups);
+    console.log(filteredBackups);
     // Save the newly created deletedVideos and playlist
     chrome.storage.local.set({
       data: {
@@ -67,13 +74,13 @@ export const savePlaylist = (
         playlistId: playlistId,
         lastUpdate: dayAndMonth,
         playlistBackups: [
-          ...playlistBackups,
           {
             playlist: updatedCurrentPlaylist,
             deletedVideos: [...deletedVideos, ...newlyDeletedVideos],
             playlistId: playlistId,
             lastUpdate: dayAndMonth,
           },
+          ...filteredBackups,
         ],
       },
     });
@@ -85,13 +92,13 @@ export const savePlaylist = (
         playlistId: playlistId,
         lastUpdate: dayAndMonth,
         playlistBackups: [
-          ...playlistBackups,
           {
             playlist: updatedCurrentPlaylist,
             deletedVideos: [...deletedVideos, ...newlyDeletedVideos],
             playlistId: playlistId,
             lastUpdate: dayAndMonth,
           },
+          ...filteredBackups,
         ],
       })
     );

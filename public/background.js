@@ -103,7 +103,7 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(async () => {
       console.log(`Last update was: ${lastUpdate}, and today is ${dayInMonth}`);
 
       // If last update auto-sync was today, return
-      // if (dayAndMonth === lastUpdate) return;
+      if (dayAndMonth === lastUpdate) return;
 
       // Check if current playlist is the same as the saved playlist
       if (playlistId.length > 0 && url.includes(playlistId)) {

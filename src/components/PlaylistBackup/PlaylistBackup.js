@@ -36,6 +36,9 @@ export const PlaylistBackup = ({ playlistBackups, children, errorMessage }) => {
   const [selectedValue, setSelectedValue] = useState();
   const [selectedPlaylist, setSelectedPlaylist] = useState([]);
 
+  // Snackbar library
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -45,14 +48,14 @@ export const PlaylistBackup = ({ playlistBackups, children, errorMessage }) => {
     setSelectedValue(value);
   };
 
-  const setPlaylistData = (data) => {
+  const savePlaylistData = (data) => {
     chrome.storage.local.set({
       data: {
         playlist: data.playlist,
         deletedVideos: data.deletedVideos,
         playlistId: data.playlistId,
         lastUpdate: data.lastUpdate,
-        playlistBackups: [...playlistBackups, selectedPlaylist],
+        playlistBackups: [selectedPlaylist, ...playlistBackups],
       },
     });
     localStorage.setItem(
@@ -62,7 +65,7 @@ export const PlaylistBackup = ({ playlistBackups, children, errorMessage }) => {
         deletedVideos: data.deletedVideos,
         playlistId: data.playlistId,
         lastUpdate: data.lastUpdate,
-        playlistBackups: [...playlistBackups, selectedPlaylist],
+        playlistBackups: [selectedPlaylist, ...playlistBackups],
       })
     );
   };
@@ -97,7 +100,7 @@ export const PlaylistBackup = ({ playlistBackups, children, errorMessage }) => {
                     <Button
                       variant="outlined"
                       func={() => {
-                        setPlaylistData();
+                        savePlaylistData(item);
                         enqueueSnackbar(
                           `Your playlist from ${selectedPlaylist.lastUpdate} has been restored.`,
                           {
@@ -136,7 +139,7 @@ export const PlaylistBackup = ({ playlistBackups, children, errorMessage }) => {
         <Button
           variant="outlined"
           func={() => {
-            setPlaylistData();
+            savePlaylistData(selectedPlaylist);
             enqueueSnackbar(
               `Your playlist from ${selectedPlaylist.lastUpdate} has been restored.`,
               {

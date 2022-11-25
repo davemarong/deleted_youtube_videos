@@ -10,9 +10,13 @@
     ),
   ].map((item) => {
     const title = item.querySelector("#meta h4 #video-title");
-    const img = item.querySelector("#img");
+    const img = item.querySelector("#thumbnail img");
     const url = item.querySelector("#thumbnail");
-    return { title: title.textContent.trim(), img: img.src, url: url.href };
+    return {
+      title: title.textContent.trim(),
+      img: img.currentSrc,
+      url: url.href,
+    };
   });
   // Find playlistId in the url
   const text = "list=";

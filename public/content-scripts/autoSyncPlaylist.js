@@ -9,9 +9,13 @@
     ),
   ].map((item) => {
     const title = item.querySelector("#meta h4 #video-title");
-    const img = item.querySelector("#img");
+    const img = item.querySelector("#thumbnail img");
     const url = item.querySelector("#thumbnail");
-    return { title: title.textContent.trim(), img: img.src, url: url.href };
+    return {
+      title: title.textContent.trim(),
+      img: img.currentSrc,
+      url: url.href,
+    };
   });
 
   // Find playlistId in the url
@@ -72,6 +76,9 @@
       }
     });
 
+    // Cut down backups until it's less then 15 item
+    const filteredBackups = playlistBackups.filter((item, index) => index < 19);
+
     // Save the newly created deletedVideos and playlist
     chrome.storage.local.set({
       data: {
@@ -87,13 +94,13 @@
         playlistId: playlistId,
         lastUpdate: dayAndMonth,
         playlistBackups: [
-          ...playlistBackups,
           {
             playlist: updatedCurrentPlaylist,
             deletedVideos: [...deletedVideos, ...newlyDeletedVideos],
             playlistId: playlistId,
             lastUpdate: dayAndMonth,
           },
+          ...filteredBackups,
         ],
       },
     });
@@ -105,13 +112,13 @@
         playlistId: playlistId,
         lastUpdate: dayAndMonth,
         playlistBackups: [
-          ...playlistBackups,
           {
             playlist: updatedCurrentPlaylist,
             deletedVideos: [...deletedVideos, ...newlyDeletedVideos],
             playlistId: playlistId,
             lastUpdate: dayAndMonth,
           },
+          ...filteredBackups,
         ],
       })
     );

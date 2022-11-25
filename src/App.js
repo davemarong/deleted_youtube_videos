@@ -28,11 +28,11 @@ function App() {
   // Functions
 
   // TESTING;
-  let data = test_data;
-  let loading = false;
+  // let data = test_data;
+  // let loading = false;
 
   // Custom hook
-  // const [data, loading] = useGetChromeStorage();
+  const [data, loading] = useGetChromeStorage();
 
   // Props object
   const PagesProps = {
@@ -48,7 +48,7 @@ function App() {
         <Route path="/Playlist" element={<MyPlaylist {...PagesProps} />} />
         <Route path="/Videos" element={<MyDeletedVideos {...PagesProps} />} />
         <Route path="/Backups" element={<PlaylistBackups {...PagesProps} />} />
-        <Route path="*" element={<Navigate to="/Backups" replace />} />
+        <Route path="*" element={<Navigate to="/Sync" replace />} />
       </Routes>
     </>
   );
