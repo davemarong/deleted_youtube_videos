@@ -16,11 +16,7 @@ import { ToolTip } from "../components/ToolTip/ToolTip";
 import { Menu } from "../components/Menu/Menu";
 
 // Utils
-import {
-  comparePlaylists,
-  compareIDs,
-  savePlaylist,
-} from "../Utils/Utils";
+import { comparePlaylists, compareIDs, savePlaylist } from "../Utils/Utils";
 
 // Icon
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
@@ -83,7 +79,7 @@ export const SyncPlaylist = ({ data, loading }) => {
   return (
     <>
       <Nav />
-      <Header>Find Playlist</Header>
+      <Header>Sync</Header>
       <LastUpdate data={data} />
       <Menu menuItems={menu_items} />
       {matchingID && (

@@ -105,11 +105,16 @@ export const savePlaylist = (
   });
 };
 
-export const deletePropertyInStorage = (property, value) => {
+export const deletePropertyInStorage = (
+  property,
+  value,
+  property2 = property,
+  value2 = value
+) => {
   chrome.storage.local.get(["data"], ({ data }) => {
-    console.log({ ...data, [property]: value });
+    console.log({ ...data, [property]: value, [property2]: value2 });
     chrome.storage.local.set({
-      data: { ...data, [property]: value },
+      data: { ...data, [property]: value, [property2]: value2 },
     });
   });
 };

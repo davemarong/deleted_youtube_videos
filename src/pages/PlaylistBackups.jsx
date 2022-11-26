@@ -26,7 +26,7 @@ export const PlaylistBackups = ({ data }) => {
   return (
     <>
       <Nav />
-      <Header>Playlist Backups</Header>
+      <Header>Backups</Header>
       <PlaylistBackup
         errorMessage={backupsPlaylistErrorMessage}
         playlistBackups={data.playlistBackups}

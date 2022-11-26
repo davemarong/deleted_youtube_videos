@@ -34,12 +34,13 @@ export const MyDeletedVideos = ({ data }) => {
       deletePropertyInStorage("deletedVideos", []);
     },
     snackText: "You have deleted your 'Deleted Videos'",
+    align: "right",
   };
   // Return
   return (
     <>
       <Nav />
-      <Header>My Deleted Videos</Header>
+      <Header>Videos</Header>
       <Button {...ButtonProps}>Remove 'My deleted Videos'</Button>
       <Playlist
         playlistData={data.deletedVideos}
