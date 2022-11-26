@@ -18,7 +18,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 
 // Components
-
+import { useGetChromeStorage } from "../CustomHooks/useGetChromeStorage";
 // Custom Hook
 
 // Utils
@@ -26,7 +26,6 @@ import Grid from "@mui/material/Grid";
 // External
 
 // Data
-import { playlist_test_data } from "../../Data/TestData";
 
 // Functional component
 export const Playlist = ({ children, playlistData, loading, errorMessage }) => {

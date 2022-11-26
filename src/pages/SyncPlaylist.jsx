@@ -17,8 +17,6 @@ import { Menu } from "../components/Menu/Menu";
 
 // Utils
 import {
-  getPlaylistAndPassMessage,
-  injectFunctionToWebsite,
   comparePlaylists,
   compareIDs,
   savePlaylist,
@@ -28,13 +26,11 @@ import {
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
 
 // Custom Hook
-import { useGetChromeStorage } from "../components/CustomHooks/useGetChromeStorage";
 
 // External
 import { useSnackbar } from "notistack";
 
 // Data
-import { playlist_test_data } from "../Data/TestData";
 import { Button } from "../components/Button/Button";
 import { menu_items } from "../components/Menu/MenuItems";
 import {

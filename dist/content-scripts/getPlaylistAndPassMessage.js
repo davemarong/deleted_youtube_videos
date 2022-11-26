@@ -1,18 +1,23 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-undef */
 // Find playlist on the youtube page and send it back to extension
+
 {
-  let currentPlaylist = [
+  console.log("Starting getPlaylistAndPassMessage content script");
+  const currentPlaylist = [
     ...document.querySelectorAll(
-      "[page-subtype='playlist'] ytd-playlist-video-renderer"
+      "[playlist-type='PLVE'] #items #playlist-items"
     ),
   ].map((item) => {
-    const title = item.querySelector("#meta h3 a");
-    const img = item.querySelector("#img");
-    const url = item.querySelector("#thumbnail #thumbnail");
-    return { title: title.textContent.trim(), img: img.src, url: url.href };
+    const title = item.querySelector("#meta h4 #video-title");
+    const img = item.querySelector("#thumbnail img");
+    const url = item.querySelector("#thumbnail");
+    return {
+      title: title.textContent.trim(),
+      img: img.currentSrc,
+      url: url.href,
+    };
   });
-
   // Find playlistId in the url
   const text = "list=";
   const url = window.location.href;
