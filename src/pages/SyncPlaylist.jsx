@@ -22,6 +22,7 @@ import { comparePlaylists, compareIDs, savePlaylist } from "../Utils/Utils";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
 
 // Custom Hook
+import { useGetChromeStorage } from "../components/CustomHooks/useGetChromeStorage";
 
 // External
 import { useSnackbar } from "notistack";
@@ -35,16 +36,19 @@ import {
 } from "../constants/Constants";
 
 // Functional component
-export const SyncPlaylist = ({ data, loading }) => {
+export const SyncPlaylist = () => {
   // State
   // This playlist comes from the youtube page, sent to us by the contentScript getPlaylistAndPassMessage
   const [chromePlaylist, setChromePlaylist] = useState([]);
   // This is the loadingIndicator from when chromePlaylist is fetched
   const [chromeLoading, setChromeLoading] = useState(false);
   // This is true if the two playlistId's are the same.
-  const [matchingID, setMatchingId] = useState(false);
+  const [showSyncButton, setShowSyncButton] = useState(true);
   // Snackbar library
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  // Custom hook
+  const [data, loading, setData] = useGetChromeStorage();
 
   // Effect
   useEffect(() => {
@@ -71,8 +75,11 @@ export const SyncPlaylist = ({ data, loading }) => {
     });
   }, []);
   useEffect(() => {
-    // XXXXXXXX Now we only compare id's when the youtube playlsit is fetched. We need to do the same when the fetching frm chrome.storage is done as well
-    setMatchingId(compareIDs(chromePlaylist.playlistId, data.playlistId));
+    // if playlistId dont exist, then their is none saved playlist, and the user can sync a new playlist
+    if (!data.playlistId) return;
+
+    // XXXXXXXX Now we only compare id's when the youtube playlist is fetched. We need to do the same when the fetching frm chrome.storage is done as well
+    setShowSyncButton(compareIDs(chromePlaylist.playlistId, data.playlistId));
   }, [data, chromePlaylist]);
 
   // Return
@@ -82,7 +89,7 @@ export const SyncPlaylist = ({ data, loading }) => {
       <Header>Sync</Header>
       <LastUpdate data={data} />
       <Menu menuItems={menu_items} />
-      {matchingID && (
+      {showSyncButton && (
         <Button
           variant="contained"
           icon={<SyncRoundedIcon />}
@@ -103,6 +110,8 @@ export const SyncPlaylist = ({ data, loading }) => {
                 variant: "success",
               }
             );
+            console.log(chromePlaylist.playlist);
+            setData(chromePlaylist.playlist);
           }}
         >
           Sync now

@@ -20,12 +20,18 @@ import { deletePropertyInStorage } from "../Utils/Utils";
 
 // External
 
+// Custom Hook
+import { useGetChromeStorage } from "../components/CustomHooks/useGetChromeStorage";
+
 // Data
 import { deletedVideosErrorMessage } from "../constants/Constants";
 
 // Functional component
-export const MyDeletedVideos = ({ data }) => {
+export const MyDeletedVideos = () => {
   // State
+
+  // Custom hook
+  const [data, loading] = useGetChromeStorage();
 
   // Functions
   const ButtonProps = {

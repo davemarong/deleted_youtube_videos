@@ -13,13 +13,17 @@ import { PlaylistBackup } from "../components/PlaylistBackup/PlaylistBackup";
 
 // External
 
+// Custom Hook
+import { useGetChromeStorage } from "../components/CustomHooks/useGetChromeStorage";
+
 // Data
 import { backupsPlaylistErrorMessage } from "../constants/Constants";
 
 // Functional component
-export const PlaylistBackups = ({ data }) => {
+export const PlaylistBackups = () => {
   // State
-
+  // Custom hook
+  const [data, loading] = useGetChromeStorage();
   // Functions
 
   // Return

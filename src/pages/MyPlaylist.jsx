@@ -18,12 +18,17 @@ import { deletePropertyInStorage } from "../Utils/Utils";
 
 // External
 
+// Custom Hook
+import { useGetChromeStorage } from "../components/CustomHooks/useGetChromeStorage";
+
 // Data
 import { oldPlaylistErrorMessage } from "../constants/Constants";
 
 // Functional component
-export const MyPlaylist = ({ data, loading }) => {
+export const MyPlaylist = () => {
   // State
+  // Custom hook
+  const [data, loading] = useGetChromeStorage();
 
   // Functions
   const ButtonProps = {

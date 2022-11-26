@@ -20,6 +20,7 @@ import { test_data } from "./Data/TestData";
 
 // Custom Hook
 import { useGetChromeStorage } from "./components/CustomHooks/useGetChromeStorage";
+import { Button } from "./components/Button/Button";
 
 // Functional component
 function App() {
@@ -33,7 +34,7 @@ function App() {
 
   // Custom hook
   const [data, loading] = useGetChromeStorage();
-
+  console.log("hei");
   // Props object
   const PagesProps = {
     data: data,

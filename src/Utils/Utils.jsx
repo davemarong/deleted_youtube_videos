@@ -43,7 +43,6 @@ export const savePlaylist = (
     const { playlist, deletedVideos, playlistBackups } = data;
 
     // Filter out videos that are not found in oldPlaylist and currentPlaylist
-    console.log("newlyDeletedVideos", newlyDeletedVideos);
 
     // Get img-url from oldPlaylist if newPlaylist does not have
     const updatedCurrentPlaylist = currentPlaylist.map((currentVideo) => {
@@ -61,11 +60,10 @@ export const savePlaylist = (
         return currentVideo;
       }
     });
-    console.log(updatedCurrentPlaylist);
 
     // Cut down backups until it's less then 15 item
     const filteredBackups = checkBackupPlaylistLimit(playlistBackups);
-    console.log(filteredBackups);
+
     // Save the newly created deletedVideos and playlist
     chrome.storage.local.set({
       data: {

@@ -35,9 +35,9 @@ export const useGetChromeStorage = (dataType) => {
         setLoading(false);
       }
     });
-  }, []);
+  }, [chromeData]);
   // Functions
 
   // Return
-  return [chromeData, loading];
+  return [chromeData, loading, setChromeData];
 };
