@@ -104,3 +104,12 @@ export const savePlaylist = (
     );
   });
 };
+
+export const deletePropertyInStorage = (property, value) => {
+  chrome.storage.local.get(["data"], ({ data }) => {
+    console.log({ ...data, [property]: value });
+    chrome.storage.local.set({
+      data: { ...data, [property]: value },
+    });
+  });
+};
