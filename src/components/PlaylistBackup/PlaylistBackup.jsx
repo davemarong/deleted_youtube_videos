@@ -48,14 +48,14 @@ export const PlaylistBackup = ({ playlistBackups, children, errorMessage }) => {
     setSelectedValue(value);
   };
 
-  const savePlaylistData = (data) => {
+  const savePlaylistData = (data, playlistData) => {
     chrome.storage.local.set({
       data: {
         playlist: data.playlist,
         deletedVideos: data.deletedVideos,
         playlistId: data.playlistId,
         lastUpdate: data.lastUpdate,
-        playlistBackups: [selectedPlaylist, ...playlistBackups],
+        playlistBackups: [playlistData, ...playlistBackups],
       },
     });
     localStorage.setItem(
@@ -65,7 +65,7 @@ export const PlaylistBackup = ({ playlistBackups, children, errorMessage }) => {
         deletedVideos: data.deletedVideos,
         playlistId: data.playlistId,
         lastUpdate: data.lastUpdate,
-        playlistBackups: [selectedPlaylist, ...playlistBackups],
+        playlistBackups: [playlistData, ...playlistBackups],
       })
     );
   };
@@ -100,7 +100,7 @@ export const PlaylistBackup = ({ playlistBackups, children, errorMessage }) => {
                     <Button
                       variant="outlined"
                       func={() => {
-                        savePlaylistData(item);
+                        savePlaylistData(item, item);
                         enqueueSnackbar(
                           `Your playlist from ${selectedPlaylist.lastUpdate} has been restored.`,
                           {
