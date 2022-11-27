@@ -29,18 +29,14 @@ import Zoom from "@mui/material/Zoom";
 // Data
 
 // Functional component
-export const Modal = ({ onClose, selectedValue, open, children, title }) => {
+export const Modal = ({ onClose, open, children, title }) => {
   // State
-
-  const handleClose = () => {
-    onClose(selectedValue);
-  };
 
   // Functions
 
   // Return
   return (
-    <Dialog onClose={handleClose} open={open}>
+    <Dialog onClose={onClose} open={open}>
       <DialogTitle>{title}</DialogTitle>
       {children}
     </Dialog>

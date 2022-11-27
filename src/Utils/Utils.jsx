@@ -122,3 +122,28 @@ export const deletePropertyInStorage = (
     });
   });
 };
+
+export const savePlaylistData = (backupData) => {
+  chrome.storage.local.get(["data"], ({ data }) => {
+    const { playlistBackups } = data;
+    chrome.storage.local.set({
+      data: {
+        playlist: backupData.playlist,
+        deletedVideos: backupData.deletedVideos,
+        playlistId: backupData.playlistId,
+        lastUpdate: backupData.lastUpdate,
+        playlistBackups: [backupData, ...playlistBackups],
+      },
+    });
+    localStorage.setItem(
+      "playlistData",
+      JSON.stringify({
+        playlist: backupData.playlist,
+        deletedVideos: backupData.deletedVideos,
+        playlistId: backupData.playlistId,
+        lastUpdate: backupData.lastUpdate,
+        playlistBackups: [backupData, ...playlistBackups],
+      })
+    );
+  });
+};

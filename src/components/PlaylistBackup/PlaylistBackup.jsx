@@ -23,52 +23,26 @@ import { Playlist } from "../Playlist/Playlist";
 // Custom Hook
 
 // Utils
+import { savePlaylistData } from "../../Utils/Utils";
 
 // External
 import { useSnackbar } from "notistack";
+import { ButtonGroup } from "../ButtonGroup/ButtonGroup";
+import { BackupButtons } from "./BackupButtons";
+import { useModal } from "../CustomHooks/useModal";
 
 // Data
 
 // Functional component
 export const PlaylistBackup = ({ playlistBackups, children, errorMessage }) => {
   // State
-  const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState();
+  const [handleClickOpen, handleClose, open] = useModal();
+
   const [selectedPlaylist, setSelectedPlaylist] = useState([]);
 
   // Snackbar library
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (value) => {
-    setOpen(false);
-    setSelectedValue(value);
-  };
-
-  const savePlaylistData = (data, playlistData) => {
-    chrome.storage.local.set({
-      data: {
-        playlist: data.playlist,
-        deletedVideos: data.deletedVideos,
-        playlistId: data.playlistId,
-        lastUpdate: data.lastUpdate,
-        playlistBackups: [playlistData, ...playlistBackups],
-      },
-    });
-    localStorage.setItem(
-      "playlistData",
-      JSON.stringify({
-        playlist: data.playlist,
-        deletedVideos: data.deletedVideos,
-        playlistId: data.playlistId,
-        lastUpdate: data.lastUpdate,
-        playlistBackups: [playlistData, ...playlistBackups],
-      })
-    );
-  };
   // Functions
   console.log(playlistBackups);
   // Return
@@ -96,32 +70,12 @@ export const PlaylistBackup = ({ playlistBackups, children, errorMessage }) => {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Grid container flexWrap="nowrap">
-                    <Button
-                      variant="outlined"
-                      func={() => {
-                        savePlaylistData(item, item);
-                        enqueueSnackbar(
-                          `Your playlist from ${selectedPlaylist.lastUpdate} has been restored.`,
-                          {
-                            autoHideDuration: 6000,
-                            variant: "success",
-                          }
-                        );
-                      }}
-                    >
-                      Restore
-                    </Button>
-                    <Button
-                      variant="contained"
-                      func={() => {
-                        setSelectedPlaylist(item);
-                        handleClickOpen();
-                      }}
-                    >
-                      See playlist
-                    </Button>
-                  </Grid>
+                  <BackupButtons
+                    handleClickOpen={handleClickOpen}
+                    setSelectedPlaylist={setSelectedPlaylist}
+                    item={item}
+                    selectedPlaylist={selectedPlaylist}
+                  />
                 </AccordionDetails>
               </Accordion>
             );
@@ -131,22 +85,15 @@ export const PlaylistBackup = ({ playlistBackups, children, errorMessage }) => {
         )}
       </List>
       <Modal
-        selectedValue={selectedValue}
         open={open}
         onClose={handleClose}
         title={selectedPlaylist.lastUpdate}
       >
         <Button
           variant="outlined"
+          snackText={`Your playlist from ${selectedPlaylist?.lastUpdate} has been restored.`}
           func={() => {
             savePlaylistData(selectedPlaylist);
-            enqueueSnackbar(
-              `Your playlist from ${selectedPlaylist.lastUpdate} has been restored.`,
-              {
-                autoHideDuration: 6000,
-                variant: "success",
-              }
-            );
           }}
         >
           Restore

@@ -51,9 +51,11 @@ export const SyncPlaylist = () => {
     data: data,
     youtubePlaylist: youtubePlaylist,
   });
+
   useEffect(() => {
     setMyPlaylist(data.playlist);
   }, [data]);
+
   // Props object
   const ButtonProps = {
     icon: <SyncRoundedIcon />,
