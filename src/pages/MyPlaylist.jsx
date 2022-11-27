@@ -1,6 +1,7 @@
 // IMPORT
 
 // React
+import { useState, useEffect } from "react";
 
 // Material UI
 
@@ -27,14 +28,21 @@ import { oldPlaylistErrorMessage } from "../constants/Constants";
 // Functional component
 export const MyPlaylist = () => {
   // State
+  const [myPlaylist, setMyPlaylist] = useState([]);
+
   // Custom hook
   const [data, loading] = useGetChromeStorage();
+
+  useEffect(() => {
+    setMyPlaylist(data.playlist);
+  }, [data]);
 
   // Functions
   const ButtonProps = {
     icon: <DeleteIcon />,
     func: () => {
       deletePropertyInStorage("playlist", [], "playlistId", "");
+      setMyPlaylist([]);
     },
     snackText: "You have deleted your 'Playlist'",
     align: "right",
@@ -46,7 +54,7 @@ export const MyPlaylist = () => {
       <Header>Playlist</Header>
       <Button {...ButtonProps}>Delete 'Playlist'</Button>
       <Playlist
-        playlistData={data.playlist}
+        playlistData={myPlaylist}
         errorMessage={oldPlaylistErrorMessage}
       >
         My Playlist

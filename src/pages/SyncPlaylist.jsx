@@ -27,7 +27,6 @@ import { useGetYoutubePlaylist } from "../components/CustomHooks/useGetYoutubePl
 import { useShowSyncButton } from "../components/CustomHooks/useShowSyncButton";
 
 // External
-import { useSnackbar } from "notistack";
 
 // Data
 import { Button } from "../components/Button/Button";
@@ -42,12 +41,9 @@ export const SyncPlaylist = () => {
   // State
   const [myPlaylist, setMyPlaylist] = useState([]);
 
-  // Snackbar library
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-
   // Custom hook
   // Getting data from chrome storage
-  const [data, loading, setData] = useGetChromeStorage();
+  const [data, loading] = useGetChromeStorage();
   // Getting data from youtube
   const [youtubePlaylist, youtubeLoading] = useGetYoutubePlaylist();
   // Get data if to show syncButton or not
@@ -62,7 +58,6 @@ export const SyncPlaylist = () => {
   const ButtonProps = {
     icon: <SyncRoundedIcon />,
     snackText: `Your playlist have been synced.`,
-    align: "right",
     variant: "contained",
     func: () => {
       savePlaylist(youtubePlaylist);

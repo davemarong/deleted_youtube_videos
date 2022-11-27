@@ -3,6 +3,7 @@
 // IMPORT
 
 // React
+import { useState, useEffect } from "react";
 
 // Material UI
 
@@ -29,15 +30,21 @@ import { deletedVideosErrorMessage } from "../constants/Constants";
 // Functional component
 export const MyDeletedVideos = () => {
   // State
+  const [deletedVideos, setDeletedVideos] = useState([]);
 
   // Custom hook
-  const [data, loading] = useGetChromeStorage();
+  const [data] = useGetChromeStorage();
+
+  useEffect(() => {
+    setDeletedVideos(data.deletedVideos);
+  }, [data]);
 
   // Functions
   const ButtonProps = {
     icon: <DeleteIcon />,
     func: () => {
       deletePropertyInStorage("deletedVideos", []);
+      setDeletedVideos([]);
     },
     snackText: "You have deleted your 'Deleted Videos'",
     align: "right",
@@ -49,7 +56,7 @@ export const MyDeletedVideos = () => {
       <Header>Videos</Header>
       <Button {...ButtonProps}>Remove 'My deleted Videos'</Button>
       <Playlist
-        playlistData={data.deletedVideos}
+        playlistData={deletedVideos}
         errorMessage={deletedVideosErrorMessage}
       >
         My Deleted Videos
