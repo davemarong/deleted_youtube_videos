@@ -16,7 +16,7 @@ export const comparePlaylists = (list1, list2) => {
       !list2.find((currentVideo) => oldVideo.title === currentVideo.title)
   );
 
-  return [newlyDeletedVideos.length, newlyDeletedVideos];
+  return newlyDeletedVideos.length;
 };
 export const compareIDs = (id1, id2) => {
   if (id1 === id2) return true;

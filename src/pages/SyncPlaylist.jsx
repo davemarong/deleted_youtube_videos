@@ -61,18 +61,11 @@ export const SyncPlaylist = () => {
   // Props object
   const ButtonProps = {
     icon: <SyncRoundedIcon />,
-    // snackText: `Your playlist have been synced. We found ${numberDeletedVideos} deleted videos`,
+    snackText: `Your playlist have been synced.`,
     align: "right",
     variant: "contained",
     func: () => {
-      const numberDeletedVideos = savePlaylist(youtubePlaylist);
-      enqueueSnackbar(
-        `Your playlist have been synced. We found ${numberDeletedVideos} deleted videos`,
-        {
-          autoHideDuration: 6000,
-          variant: "success",
-        }
-      );
+      savePlaylist(youtubePlaylist);
       setMyPlaylist(youtubePlaylist.playlist);
     },
   };
