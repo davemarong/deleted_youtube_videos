@@ -26,13 +26,11 @@ export const compareIDs = (id1, id2) => {
 export const checkBackupPlaylistLimit = (backup) =>
   backup.filter((item, index) => index < 19);
 
-export const savePlaylist = (
-  currentPlaylist,
-  playlistId,
-  newlyDeletedVideos
-) => {
-  console.log(currentPlaylist);
+export const savePlaylist = (youtubePlaylist) => {
+  const { playlist: currentPlaylist, playlistId } = youtubePlaylist;
 
+  console.log(currentPlaylist);
+  let newlyDeletedVideos = [];
   // Get day of month
   const date = new Date();
   const [day, month, dayInMonth] = date.toString().split(" ");
@@ -43,7 +41,13 @@ export const savePlaylist = (
     const { playlist, deletedVideos, playlistBackups } = data;
 
     // Filter out videos that are not found in oldPlaylist and currentPlaylist
-
+    newlyDeletedVideos = playlist.filter(
+      (oldVideo) =>
+        !currentPlaylist.find(
+          (currentVideo) => oldVideo.title === currentVideo.title
+        )
+    );
+    console.log(newlyDeletedVideos);
     // Get img-url from oldPlaylist if newPlaylist does not have
     const updatedCurrentPlaylist = currentPlaylist.map((currentVideo) => {
       // If img is present, return
@@ -101,6 +105,8 @@ export const savePlaylist = (
       })
     );
   });
+  console.log(newlyDeletedVideos.length);
+  return newlyDeletedVideos.length;
 };
 
 export const deletePropertyInStorage = (

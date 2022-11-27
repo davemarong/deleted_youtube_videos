@@ -35,7 +35,7 @@ export const useGetChromeStorage = (dataType) => {
         setLoading(false);
       }
     });
-  }, [chromeData]);
+  }, []);
   // Functions
 
   // Return

@@ -23,6 +23,8 @@ import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
 
 // Custom Hook
 import { useGetChromeStorage } from "../components/CustomHooks/useGetChromeStorage";
+import { useGetYoutubePlaylist } from "../components/CustomHooks/useGetYoutubePlaylist";
+import { useShowSyncButton } from "../components/CustomHooks/useShowSyncButton";
 
 // External
 import { useSnackbar } from "notistack";
@@ -38,50 +40,42 @@ import {
 // Functional component
 export const SyncPlaylist = () => {
   // State
-  // This playlist comes from the youtube page, sent to us by the contentScript getPlaylistAndPassMessage
-  const [chromePlaylist, setChromePlaylist] = useState([]);
-  // This is the loadingIndicator from when chromePlaylist is fetched
-  const [chromeLoading, setChromeLoading] = useState(false);
-  // This is true if the two playlistId's are the same.
-  const [showSyncButton, setShowSyncButton] = useState(true);
+  const [myPlaylist, setMyPlaylist] = useState([]);
+
   // Snackbar library
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   // Custom hook
+  // Getting data from chrome storage
   const [data, loading, setData] = useGetChromeStorage();
-
-  // Effect
+  // Getting data from youtube
+  const [youtubePlaylist, youtubeLoading] = useGetYoutubePlaylist();
+  // Get data if to show syncButton or not
+  const showSyncButton = useShowSyncButton({
+    data: data,
+    youtubePlaylist: youtubePlaylist,
+  });
   useEffect(() => {
-    // Loading bar for data fetched from the youtube page
-    setChromeLoading(true);
-
-    // Send message to the background script which can call getPlaylistAndPassMessage
-    chrome.runtime.sendMessage({ popupOpen: true });
-
-    // Receive message from the content script "getPlaylistAndPassMessage"
-    chrome.runtime.onMessage.addListener((request) => {
-      console.log("onMessage listener fired in syncPlaylist.js");
-      if (request?.playlist.length > 0) {
-        console.log("The onMessage request parameter had playlistData");
-        console.log(request);
-        setChromePlaylist(request);
-        setChromeLoading(false);
-      } else {
-        console.log(
-          "The onMessage request parameter did not have playlistData"
-        );
-        setChromeLoading(false);
-      }
-    });
-  }, []);
-  useEffect(() => {
-    // if playlistId dont exist, then their is none saved playlist, and the user can sync a new playlist
-    if (!data.playlistId) return;
-
-    // XXXXXXXX Now we only compare id's when the youtube playlist is fetched. We need to do the same when the fetching frm chrome.storage is done as well
-    setShowSyncButton(compareIDs(chromePlaylist.playlistId, data.playlistId));
-  }, [data, chromePlaylist]);
-
+    setMyPlaylist(data.playlist);
+  }, [data]);
+  // Props object
+  const ButtonProps = {
+    icon: <SyncRoundedIcon />,
+    // snackText: `Your playlist have been synced. We found ${numberDeletedVideos} deleted videos`,
+    align: "right",
+    variant: "contained",
+    func: () => {
+      const numberDeletedVideos = savePlaylist(youtubePlaylist);
+      enqueueSnackbar(
+        `Your playlist have been synced. We found ${numberDeletedVideos} deleted videos`,
+        {
+          autoHideDuration: 6000,
+          variant: "success",
+        }
+      );
+      setMyPlaylist(youtubePlaylist.playlist);
+    },
+  };
   // Return
   return (
     <>
@@ -89,45 +83,18 @@ export const SyncPlaylist = () => {
       <Header>Sync</Header>
       <LastUpdate data={data} />
       <Menu menuItems={menu_items} />
-      {showSyncButton && (
-        <Button
-          variant="contained"
-          icon={<SyncRoundedIcon />}
-          func={() => {
-            const [numberDeletedVideos, deletedVideos] = comparePlaylists(
-              data.playlist,
-              chromePlaylist.playlist
-            );
-            savePlaylist(
-              chromePlaylist.playlist,
-              chromePlaylist.playlistId,
-              deletedVideos
-            );
-            enqueueSnackbar(
-              `Your playlist have been synced. We found ${numberDeletedVideos} deleted videos`,
-              {
-                autoHideDuration: 6000,
-                variant: "success",
-              }
-            );
-            console.log(chromePlaylist.playlist);
-            setData(chromePlaylist.playlist);
-          }}
-        >
-          Sync now
-        </Button>
-      )}
+      {showSyncButton && <Button {...ButtonProps}>Sync now</Button>}
       <SplitScreen>
         <Playlist
-          playlistData={data.playlist}
+          playlistData={myPlaylist}
           loading={loading}
           errorMessage={oldPlaylistErrorMessage}
         >
           Old Playlist
         </Playlist>
         <Playlist
-          playlistData={chromePlaylist.playlist}
-          loading={chromeLoading}
+          playlistData={youtubePlaylist.playlist}
+          loading={youtubeLoading}
           errorMessage={newPlaylistErrorMessage}
         >
           New Playlist
