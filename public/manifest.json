@@ -1,18 +1,34 @@
 {
-  "name": "React - Deleted youtube videos",
-  "description": "This extension will track and sync a youtube playlist automatically, and save the titles of videos thats been removed.",
-  "version": "1.0",
+  "name": "Deleted youtube videos",
+  "description": "Automatically track your playlist for deleted videos",
+  "version": "2.0",
   "manifest_version": 3,
   "background": {
     "service_worker": "./background.js",
     "type": "module"
   },
-  "permissions": ["storage", "activeTab", "scripting","background","webNavigation","tabs"],
-  "host_permissions": [
-    "https://www.youtube.com/*"
-],
-
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "background",
+    "webNavigation",
+    "tabs"
+  ],
+  "host_permissions": ["https://www.youtube.com/*"],
   "action": {
-    "default_popup": "index.html"
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "./images/logoBig.png",
+      "32": "./images/logoBig.png",
+      "48": "./images/logoBig.png",
+      "128": "./images/logoBig.png"
+    }
+  },
+  "icons": {
+    "16": "./images/logoBig.png",
+    "32": "./images/logoBig.png",
+    "48": "./images/logoBig.png",
+    "128": "./images/logoBig.png"
   }
 }

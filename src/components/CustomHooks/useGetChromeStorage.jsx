@@ -22,11 +22,13 @@ export const useGetChromeStorage = (dataType) => {
   const [loading, setLoading] = useState(true);
 
   // Effect
+  // ADD CLEANUP!!!!!!!!!!!!!
   useEffect(() => {
     console.log(
       "Running useGetChromeStorage custom hook to fetch data from chrome.storage"
     );
     chrome.storage.local.get("data", ({ data }) => {
+      console.log("Data in hook", data);
       if (dataType) {
         setChromeData(data[dataType]);
         setLoading(false);

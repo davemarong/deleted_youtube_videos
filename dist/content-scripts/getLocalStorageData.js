@@ -21,6 +21,7 @@
         playlistId: playlistData.playlistId,
         lastUpdate: playlistData.lastUpdate,
         playlistBackups: playlistData.playlistBackups,
+        history: playlistData.history,
       },
     });
   }

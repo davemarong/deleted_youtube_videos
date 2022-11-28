@@ -34,7 +34,7 @@ export const BackupButtons = ({
     <Grid container flexWrap="nowrap">
       <Button
         variant="outlined"
-        snackText={`Your playlist from ${selectedPlaylist.lastUpdate} has been restored.`}
+        snackText={`Your playlist has been restored.`}
         func={() => {
           savePlaylistData(item);
         }}

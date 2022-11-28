@@ -31,8 +31,14 @@
 
   // Fetch playlist and deletedVideos from Chrome storage
   chrome.storage.local.get(["data"], ({ data }) => {
-    let { playlist, deletedVideos, playlistId, lastUpdate, playlistBackups } =
-      data;
+    let {
+      playlist,
+      deletedVideos,
+      playlistId,
+      lastUpdate,
+      playlistBackups,
+      history,
+    } = data;
 
     // If playlistData is empty, try to get from LocalStorage
     if (playlist.length === 0) {
@@ -43,6 +49,7 @@
         playlistId = playlistData.playlistId;
         lastUpdate = playlistData.lastUpdate;
         playlistBackups = playlistData.playlistBackups;
+        history = playlistData.history;
       } else return;
     }
 
@@ -93,6 +100,7 @@
         deletedVideos: [...deletedVideos, ...newlyDeletedVideos],
         playlistId: playlistId,
         lastUpdate: dayAndMonth,
+        history: [dayAndMonth, ...history],
         playlistBackups: [
           {
             playlist: updatedCurrentPlaylist,
@@ -111,6 +119,7 @@
         deletedVideos: [...deletedVideos, ...newlyDeletedVideos],
         playlistId: playlistId,
         lastUpdate: dayAndMonth,
+        history: [dayAndMonth, ...history],
         playlistBackups: [
           {
             playlist: updatedCurrentPlaylist,

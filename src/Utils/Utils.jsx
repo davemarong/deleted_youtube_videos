@@ -29,7 +29,6 @@ export const checkBackupPlaylistLimit = (backup) =>
 export const savePlaylist = (youtubePlaylist) => {
   const { playlist: currentPlaylist, playlistId } = youtubePlaylist;
 
-  console.log(currentPlaylist);
   let newlyDeletedVideos = [];
   // Get day of month
   const date = new Date();
@@ -38,7 +37,7 @@ export const savePlaylist = (youtubePlaylist) => {
 
   // Fetch playlist and deletedVideos from Chrome storage
   chrome.storage.local.get(["data"], ({ data }) => {
-    const { playlist, deletedVideos, playlistBackups } = data;
+    const { playlist, deletedVideos, playlistBackups, history } = data;
 
     // Filter out videos that are not found in oldPlaylist and currentPlaylist
     newlyDeletedVideos = playlist.filter(
@@ -47,7 +46,6 @@ export const savePlaylist = (youtubePlaylist) => {
           (currentVideo) => oldVideo.title === currentVideo.title
         )
     );
-    console.log(newlyDeletedVideos);
     // Get img-url from oldPlaylist if newPlaylist does not have
     const updatedCurrentPlaylist = currentPlaylist.map((currentVideo) => {
       // If img is present, return
@@ -75,6 +73,7 @@ export const savePlaylist = (youtubePlaylist) => {
         deletedVideos: [...deletedVideos, ...newlyDeletedVideos],
         playlistId: playlistId,
         lastUpdate: dayAndMonth,
+        history: [dayAndMonth, ...history],
         playlistBackups: [
           {
             playlist: updatedCurrentPlaylist,
@@ -93,6 +92,7 @@ export const savePlaylist = (youtubePlaylist) => {
         deletedVideos: [...deletedVideos, ...newlyDeletedVideos],
         playlistId: playlistId,
         lastUpdate: dayAndMonth,
+        history: [dayAndMonth, ...history],
         playlistBackups: [
           {
             playlist: updatedCurrentPlaylist,
@@ -105,7 +105,6 @@ export const savePlaylist = (youtubePlaylist) => {
       })
     );
   });
-  console.log(newlyDeletedVideos.length);
   return newlyDeletedVideos.length;
 };
 
@@ -116,7 +115,6 @@ export const deletePropertyInStorage = (
   value2 = value
 ) => {
   chrome.storage.local.get(["data"], ({ data }) => {
-    console.log({ ...data, [property]: value, [property2]: value2 });
     chrome.storage.local.set({
       data: { ...data, [property]: value, [property2]: value2 },
     });
@@ -125,13 +123,14 @@ export const deletePropertyInStorage = (
 
 export const savePlaylistData = (backupData) => {
   chrome.storage.local.get(["data"], ({ data }) => {
-    const { playlistBackups } = data;
+    const { playlistBackups, history } = data;
     chrome.storage.local.set({
       data: {
         playlist: backupData.playlist,
         deletedVideos: backupData.deletedVideos,
         playlistId: backupData.playlistId,
         lastUpdate: backupData.lastUpdate,
+        history: [...history],
         playlistBackups: [backupData, ...playlistBackups],
       },
     });
@@ -142,6 +141,7 @@ export const savePlaylistData = (backupData) => {
         deletedVideos: backupData.deletedVideos,
         playlistId: backupData.playlistId,
         lastUpdate: backupData.lastUpdate,
+        history: [...history],
         playlistBackups: [backupData, ...playlistBackups],
       })
     );

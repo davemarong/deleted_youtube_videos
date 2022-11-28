@@ -27,6 +27,7 @@ export const Button = ({
   variant = "outlined",
   align = "center",
   snackText = "",
+  endIcon,
 }) => {
   // State
 
@@ -45,6 +46,7 @@ export const Button = ({
       <ButtonMui
         variant={variant}
         startIcon={icon}
+        endIcon={endIcon}
         onClick={() => {
           func();
           if (snackText.length > 1) {

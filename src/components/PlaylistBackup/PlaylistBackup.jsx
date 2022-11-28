@@ -91,7 +91,7 @@ export const PlaylistBackup = ({ playlistBackups, children, errorMessage }) => {
       >
         <Button
           variant="outlined"
-          snackText={`Your playlist from ${selectedPlaylist?.lastUpdate} has been restored.`}
+          snackText={`Your playlist from ${selectedPlaylist.lastUpdate} has been restored.`}
           func={() => {
             savePlaylistData(selectedPlaylist);
           }}
